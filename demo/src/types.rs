@@ -17,7 +17,7 @@ fn convert(temperature: f32, choice: u8) -> Option<f32> {
     }
 }
 
-pub fn main() {
+fn io_choice() -> u8 {
     println!("Temperature converter, \n (1) C to F \n (2) F to C");
     let mut user_choice = String::new();
     io::stdin().read_line(&mut user_choice).unwrap();
@@ -25,16 +25,23 @@ pub fn main() {
         .trim()
         .parse::<u8>()
         .expect("Please type a number");
+    return n_choice;
+}
+
+fn io_temperature() -> f32 {
     println!("Enter temperature:");
-
     let mut temperature = String::new();
-
     io::stdin().read_line(&mut temperature).unwrap();
     let temperature = temperature
         .trim()
         .parse::<f32>()
         .expect("Pls type a number !");
+    return temperature;
+}
 
+pub fn main() {
+    let n_choice = io_choice();
+    let temperature = io_temperature();
     match convert(temperature, n_choice) {
         Some(result) => println!("The  result: {result}"),
         None => println!("Unknown precision"),
