@@ -15,15 +15,24 @@ struct Team {
     goals_conceded: u8,
 }
 
-fn build_scores_table(results: &str) -> HashMap<&str, Team> {
+impl Team {
+    pub fn new() -> Self {
+        Team {
+            goals_conceded: 0,
+            goals_scored: 0,
+        }
+    }
+}
+
+fn build_scores_table(results: &str) -> HashMap<String, Team> {
     // The name of the team is the key and its associated struct is the value.
     let mut scores = HashMap::new();
 
     for line in results.lines() {
         let mut split_iterator = line.split(',');
         // NOTE: We use `unwrap` because we didn't deal with error handling yet.
-        let team_1_name = split_iterator.next().unwrap();
-        let team_2_name = split_iterator.next().unwrap();
+        let team_1_name = split_iterator.next().unwrap().to_string();
+        let team_2_name = split_iterator.next().unwrap().to_string();
         let team_1_score: u8 = split_iterator.next().unwrap().parse().unwrap();
         let team_2_score: u8 = split_iterator.next().unwrap().parse().unwrap();
 
@@ -31,9 +40,17 @@ fn build_scores_table(results: &str) -> HashMap<&str, Team> {
         // Keep in mind that goals scored by team 1 will be the number of goals
         // conceded by team 2. Similarly, goals scored by team 2 will be the
         // number of goals conceded by team 1.
+        add_or_upd_team(&mut scores, team_1_name, (team_1_score, team_2_score));
+        add_or_upd_team(&mut scores, team_2_name, (team_2_score, team_1_score));
     }
 
     scores
+}
+
+fn add_or_upd_team(scores: &mut HashMap<String, Team>, team_name: String, current_score: (u8, u8)) {
+    let team = scores.entry(team_name).or_insert(Team::new());
+    team.goals_scored += current_score.0;
+    team.goals_conceded += current_score.1;
 }
 
 fn main() {
