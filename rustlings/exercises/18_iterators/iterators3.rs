@@ -1,3 +1,5 @@
+use std::fmt::Error;
+
 #[derive(Debug, PartialEq, Eq)]
 enum DivisionError {
     DivideByZero,
@@ -7,21 +9,30 @@ enum DivisionError {
 // TODO: Calculate `a` divided by `b` if `a` is evenly divisible by `b`.
 // Otherwise, return a suitable error.
 fn divide(a: i32, b: i32) -> Result<i32, DivisionError> {
-    todo!();
+    if b == 0 {
+        return Err(DivisionError::DivideByZero);
+    }
+    if a % b == 0 {
+        Ok(a / b)
+    } else {
+        Err(DivisionError::NotDivisible)
+    }
 }
 
 // TODO: Add the correct return type and complete the function body.
 // Desired output: `Ok([1, 11, 1426, 3])`
-fn result_with_list() {
+fn result_with_list() -> Result<Vec<i32>, DivisionError> {
     let numbers = [27, 297, 38502, 81];
     let division_results = numbers.into_iter().map(|n| divide(n, 27));
+    division_results.filter(|r| r.is_ok()).collect()
 }
 
 // TODO: Add the correct return type and complete the function body.
 // Desired output: `[Ok(1), Ok(11), Ok(1426), Ok(3)]`
-fn list_of_results() {
+fn list_of_results() -> Vec<Result<i32, DivisionError>> {
     let numbers = [27, 297, 38502, 81];
     let division_results = numbers.into_iter().map(|n| divide(n, 27));
+    division_results.filter(|x| x.is_ok()).collect()
 }
 
 fn main() {
