@@ -1,3 +1,5 @@
+use std::process::Output;
+
 // The trait `AppendBar` has only one function which appends "Bar" to any object
 // implementing this trait.
 trait AppendBar {
@@ -6,6 +8,9 @@ trait AppendBar {
 
 impl AppendBar for String {
     // TODO: Implement `AppendBar` for the type `String`.
+    fn append_bar(self) -> Self {
+        format!("{self}Bar")
+    }
 }
 
 fn main() {
