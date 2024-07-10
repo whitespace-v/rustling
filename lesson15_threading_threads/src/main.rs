@@ -115,15 +115,18 @@ fn main() {
                     Ok(()) => println!("Processor {index} is finished!"),
                     // thread downed
                     Err(e) => {
+                        // convert error to String with downcaster
                         if let Some(s) = e.downcast_ref::<String>() {
+                            // if error converted to String
                             println!("Thread {index} panicked: {s:?}");
                         } else {
+                            // if we couldn't convert error to String
                             println!("Unknown error when processing a thread {index}");
                         }
                     }
                 }
             }
-
+            // messages from senders
             for received in rx {
                 match received {
                     ProcessorMessage::Success(msg) => println!("Message incoming: {msg}"),

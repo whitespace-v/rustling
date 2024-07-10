@@ -1,0 +1,6 @@
+[package]
+name = "lesson16_threads_mutexes_CoW_smptr"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
