@@ -170,8 +170,13 @@ fn main() {
 
         cat_parent.borrow_mut().age = 12; // change data of `cat_parent` in all recursive objects
 
-        //so we can change data from children
-        cat.borrow().parent.as_ref().unwrap().borrow_mut().age = 8;
+        // so we can change data from children
+        cat
+        .borrow() // borrow
+        .parent.as_ref() // we dont move, just reference
+        .unwrap()
+        .borrow_mut() // we will mut 
+        .age = 8;
 
         parents_iterate(&cat);
 
